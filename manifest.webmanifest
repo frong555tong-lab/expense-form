@@ -1,0 +1,26 @@
+{
+  "id": "./",
+  "name": "ใบสำรองจ่ายแทนบริษัท",
+  "short_name": "ใบสำรองจ่าย",
+  "description": "จัดทำใบสำรองจ่ายและพิมพ์เป็น PDF ในเบราว์เซอร์",
+  "lang": "th",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f4f6f8",
+  "theme_color": "#e87524",
+  "icons": [
+    {
+      "src": "./icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "./icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ]
+}

@@ -1,0 +1,274 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#e87524">
+<link rel="manifest" href="./manifest.webmanifest">
+<link rel="apple-touch-icon" href="./icons/icon-192.png">
+<title>ใบสำรองจ่ายแทนบริษัท</title>
+<style>
+  :root{--ink:#20252b;--muted:#667085;--line:#d9dee5;--accent:#e87524;--bg:#f4f6f8}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:Tahoma,"Noto Sans Thai",sans-serif}
+  .wrap{max-width:1050px;margin:28px auto;padding:0 16px}
+  header{display:flex;justify-content:space-between;align-items:center;gap:16px;margin-bottom:18px}
+  h1{font-size:24px;margin:0 0 5px} .sub{color:var(--muted);font-size:13px}
+  .panel{background:white;border:1px solid var(--line);border-radius:14px;padding:20px;margin-bottom:16px}
+  h2{font-size:16px;margin:0 0 14px}
+  .grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+  label{display:block;font-size:13px;font-weight:600;margin-bottom:6px}
+  input,textarea,select{width:100%;border:1px solid #cbd2da;border-radius:8px;padding:10px 11px;font:inherit;font-size:14px;background:#fff;color:var(--ink)}
+  textarea{min-height:70px;resize:vertical}
+  .full{grid-column:1/-1}
+  .items{width:100%;border-collapse:collapse;margin-top:8px}
+  .items th,.items td{border-bottom:1px solid var(--line);padding:8px 5px;text-align:left;font-size:13px}
+  .items th{color:var(--muted);font-weight:600}
+  .items input{min-width:0}
+  .amount{width:130px}
+  .remove{border:0;background:#fff0e8;color:#a7430b;border-radius:7px;padding:8px;cursor:pointer}
+  .actions{display:flex;gap:10px;flex-wrap:wrap}
+  button{border:0;border-radius:9px;padding:11px 16px;font:inherit;font-weight:700;cursor:pointer}
+  .primary{background:var(--accent);color:white}.secondary{background:#eef1f4;color:#26313d}
+  .total{text-align:right;font-size:18px;font-weight:700;margin-top:14px}
+  .hint{font-size:12px;color:var(--muted);line-height:1.5}
+  #printArea{display:none}
+  .choice{display:flex;gap:9px;align-items:flex-start;font-weight:400;line-height:1.6}
+  .choice input{width:auto;min-width:20px;height:20px}
+  input:invalid{border-color:#b42318}
+  button,input,select{min-height:44px}
+  .paper td,.print-value,.purpose,.status{overflow-wrap:anywhere;white-space:normal}
+  @media(max-width:480px){.wrap{padding:0 8px;margin:14px auto}.panel{padding:12px}.items thead{display:none}.items tr{display:grid;grid-template-columns:1fr 70px;border-bottom:1px solid var(--line);padding:8px 0}.items td{border:0;padding:4px}.items td:nth-child(2){grid-column:1/-1;grid-row:2}.items td:nth-child(3){grid-column:1;grid-row:3}.items td:nth-child(4){grid-column:2;grid-row:3}.items .amount{width:100%}}
+  @media(max-width:650px){.grid{grid-template-columns:1fr}.full{grid-column:auto}header{align-items:flex-start;flex-direction:column}.amount{width:100px}}
+  @media print{
+    @page{size:A4;margin:15mm}
+    body{background:#fff}
+    .wrap,header,.panel{display:none!important}
+    #printArea{display:block!important;color:#111;font-family:Tahoma,"Noto Sans Thai",sans-serif}
+    .paper{width:100%}
+    .doc-head{text-align:center;margin-bottom:22px}
+    .doc-head h1{font-size:21px;margin-bottom:4px}
+    .doc-head .en{font-size:11px;letter-spacing:1px}
+    .doc-no{display:flex;justify-content:space-between;margin:18px 0}
+    .print-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px}
+    .print-label{font-size:12px;color:#444;margin-bottom:3px}
+    .print-value{min-height:23px;border-bottom:1px dotted #888;padding:3px 0;font-size:14px}
+    .purpose{border:1px solid #aaa;padding:10px;min-height:65px;margin:12px 0 18px}
+    .purpose strong{display:block;font-size:12px;margin-bottom:6px}
+    .paper table{width:100%;border-collapse:collapse;margin:12px 0}
+    .paper th,.paper td{border:1px solid #777;padding:8px;font-size:13px}
+    .paper th{background:#f1f1f1}
+    .paper .num{text-align:right}
+    .sum{text-align:right;font-weight:bold;font-size:15px;margin:12px 0 22px}
+    .status{border:1px solid #aaa;padding:9px;margin-bottom:35px;font-size:13px}
+    .signatures{display:grid;grid-template-columns:1fr 1fr;gap:45px;margin-top:42px;text-align:center}
+    .sign-line{border-top:1px solid #333;padding-top:7px;margin-top:42px;font-size:13px}
+    tr,.signatures,.status{break-inside:avoid}
+    thead{display:table-header-group}
+    .foot{font-size:10px;color:#555;margin-top:30px;text-align:center}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div><h1>ใบสำรองจ่ายแทนบริษัท</h1><div class="sub">กรอกข้อมูล แล้วกด “พิมพ์เอกสาร” เพื่อบันทึกเป็น PDF หรือสั่งพิมพ์</div></div>
+    <div class="actions"><button class="secondary" type="button" onclick="newDocument()">เอกสารใหม่ (คงข้อมูลใช้ซ้ำ)</button><button class="primary" type="button" onclick="printDoc()">พิมพ์เอกสาร</button></div>
+  </header>
+
+  <section class="panel">
+    <p class="hint">ข้อมูลที่กรอกประมวลผลในเบราว์เซอร์เท่านั้น ไม่ส่งขึ้นเซิร์ฟเวอร์ ไม่ซิงก์ข้ามเครื่อง การเปิดเว็บยังส่งคำขอไฟล์ให้ผู้ให้บริการโฮสต์ตามปกติ</p>
+    <label class="choice"><input autocomplete="off" id="remember" type="checkbox"> จำเฉพาะบริษัท ผู้สำรองจ่าย ตำแหน่ง และผู้รับเงินคืนในเบราว์เซอร์นี้</label>
+    <label class="choice"><input autocomplete="off" id="saveDraft" type="checkbox"> บันทึกเอกสารร่างนี้ในเบราว์เซอร์ (รวมรายละเอียดทั้งหมดที่กรอก)</label>
+    <p class="hint">ไม่ควรเลือกบนเครื่องใช้ร่วมกัน ไม่มีการบันทึกหากไม่เลือก • PDF ที่บันทึกมีข้อมูลที่กรอก โปรดเก็บอย่างปลอดภัย</p>
+    <div class="actions"><button type="button" class="secondary" onclick="clearLocalData()">ล้างข้อมูลทั้งหมดของแอปนี้ในเบราว์เซอร์</button></div>
+    <p id="storageMessage" role="status" class="hint"></p>
+  </section>
+  <section class="panel">
+    <h2>ข้อมูลเอกสาร</h2>
+    <div class="grid">
+      <div><label for="company">ชื่อบริษัท</label><input autocomplete="off" id="company"></div>
+      <div><label for="docNo">เลขที่เอกสาร</label><input autocomplete="off" id="docNo"></div>
+      <div><label for="docDate">วันที่สำรองจ่าย</label><input autocomplete="off" id="docDate" type="date"></div>
+      <div><label for="payer">ผู้สำรองจ่าย</label><input autocomplete="off" id="payer" placeholder="ชื่อ-นามสกุล"></div>
+      <div><label for="payee">ผู้รับเงินคืน (ถ้าต่างจากผู้สำรองจ่าย)</label><input autocomplete="off" id="payee" autocomplete="off"></div>
+      <div><label for="position">ตำแหน่ง</label><input autocomplete="off" id="position"></div>
+      <div><label for="dueDate">วันที่คาดว่าจะคืนเงิน</label><input autocomplete="off" id="dueDate" type="date"></div>
+    </div>
+  </section>
+
+  <section class="panel">
+    <h2>รายการค่าใช้จ่าย</h2>
+    <table class="items">
+      <thead><tr><th style="width:48px">ลำดับ</th><th>รายละเอียด</th><th class="amount">จำนวนเงิน (บาท)</th><th style="width:54px"></th></tr></thead>
+      <tbody id="itemRows"></tbody>
+    </table>
+    <div class="actions" style="margin-top:12px"><button class="secondary" type="button" onclick="addRow()">+ เพิ่มรายการ</button></div>
+    <div class="total">รวมทั้งสิ้น <span id="totalText">0.00</span> บาท</div>
+  </section>
+
+  <section class="panel">
+    <h2>รายละเอียดเพิ่มเติม</h2>
+    <div class="grid">
+      <div class="full"><label for="purpose">วัตถุประสงค์ / เหตุผลที่สำรองจ่าย</label><textarea id="purpose" placeholder="กรอกรายละเอียด (ถ้ามี)"></textarea></div>
+      <div><label for="status">สถานะการคืนเงิน</label><select id="status"><option>รอคืนเงิน</option><option>คืนเงินแล้วบางส่วน</option><option>คืนเงินครบแล้ว</option></select></div>
+      <div><label for="repaid">จำนวนเงินที่คืนแล้ว (บาท)</label><input autocomplete="off" id="repaid" type="number" inputmode="decimal" min="0" max="999999999.99" step="0.01"></div>
+      <div class="full"><label for="note">หมายเหตุ</label><textarea id="note" placeholder="กรอกรายละเอียด (ถ้ามี)"></textarea></div>
+    </div>
+    <p class="hint">แนบใบเสร็จหรือหลักฐานการจ่ายเงินจริงไว้กับเอกสารนี้ และควรขอเอกสารค่าใช้จ่ายในนามบริษัทเมื่อทำได้</p>
+  </section>
+</div>
+
+<div id="printArea"><div class="paper" id="paper"></div></div>
+
+<script>
+'use strict';
+const $ = id => document.getElementById(id);
+const FIELDS = ['company','docNo','docDate','payer','payee','position','dueDate','purpose','status','repaid','note'];
+const REUSABLE = ['company','payer','payee','position'];
+// Namespace by installation path: separate Pages apps must not share form state.
+const BASE = new URL('./', location.href).pathname;
+const KEY = 'expense-local-v2:' + BASE;
+const MAX_CENTS = 99999999999;
+let loading = false;
+const money = n => (Number(n)||0).toLocaleString('th-TH',{minimumFractionDigits:2,maximumFractionDigits:2});
+const localToday = (d = new Date()) => `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+const dateTH = v => { if(!/^\d{4}-\d{2}-\d{2}$/.test(v)) return '-'; const d = new Date(v+'T00:00:00'); return Number.isNaN(d.getTime()) ? '-' : d.toLocaleDateString('th-TH',{day:'numeric',month:'long',year:'numeric'}); };
+function cents(value) {
+  const s = String(value).trim();
+  if(s === '') return 0;
+  if(!/^\d+(?:\.\d{1,2})?$/.test(s)) return null;
+  const [a,b=''] = s.split('.');
+  const n = Number(a)*100 + Number(b.padEnd(2,'0'));
+  return Number.isSafeInteger(n) && n <= MAX_CENTS ? n : null;
+}
+function bahtText(value) {
+  const n = Math.round(Number(value)*100);
+  if(!Number.isSafeInteger(n)||n<0||n>MAX_CENTS) return '';
+  const names=['ศูนย์','หนึ่ง','สอง','สาม','สี่','ห้า','หก','เจ็ด','แปด','เก้า'];
+  function read(x, continued=false) {
+    if(x>=1000000) return read(Math.floor(x/1000000))+'ล้าน'+(x%1000000?read(x%1000000,true):'');
+    const s=String(x), units=['','สิบ','ร้อย','พัน','หมื่น','แสน']; let text='';
+    for(let i=0;i<s.length;i++) {
+      const d=Number(s[i]),p=s.length-i-1; if(!d) continue;
+      if(p===0 && d===1 && (text||continued)) text+='เอ็ด';
+      else if(p===1) text+=(d===1?'':d===2?'ยี่':names[d])+'สิบ';
+      else text+=names[d]+units[p];
+    }
+    return text;
+  }
+  return (Math.floor(n/100)?read(Math.floor(n/100)):'ศูนย์')+'บาท'+(n%100?read(n%100)+'สตางค์':'ถ้วน');
+}
+function safe(s){return String(s??'').replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;').replaceAll('"','&quot;').replaceAll("'",'&#39;').replaceAll('\n','<br>');}
+function val(id){return $(id).value.trim();}
+function rows(){return [...$('itemRows').querySelectorAll('tr')];}
+function addRow(desc='',amount='') {
+  const tr=document.createElement('tr');
+  // Only constant markup is inserted. Saved/user data is assigned through value.
+  tr.innerHTML='<td class="seq"></td><td><input class="desc" autocomplete="off" aria-label="รายละเอียดค่าใช้จ่าย" placeholder="รายละเอียดค่าใช้จ่าย"></td><td><input class="amount amt" type="number" inputmode="decimal" min="0" max="999999999.99" step="0.01" aria-label="จำนวนเงิน (บาท)" placeholder="0.00"></td><td><button class="remove" type="button" aria-label="ลบรายการ">ลบ</button></td>';
+  tr.querySelector('.desc').value=String(desc);
+  tr.querySelector('.amt').value=String(amount);
+  tr.querySelector('.remove').addEventListener('click',()=>{tr.remove();renumber();updateTotal();saveState();});
+  $('itemRows').appendChild(tr);renumber();updateTotal();saveState();
+}
+function renumber(){rows().forEach((r,i)=>r.querySelector('.seq').textContent=i+1);}
+function totalCents(){return rows().reduce((s,r)=>s+(cents(r.querySelector('.amt').value)??0),0);}
+function getTotal(){return totalCents()/100;}
+function updateTotal(){$('totalText').textContent=money(getTotal());}
+function validateDocument(){
+  if(!rows().length){alert('กรุณาเพิ่มรายการค่าใช้จ่ายอย่างน้อย 1 รายการ');return false;}
+  for(const e of [...document.querySelectorAll('.amt'),$('repaid')]) {
+    const valid=cents(e.value)!==null && !e.validity.badInput;
+    e.setCustomValidity(valid?'':'กรอกจำนวนเงินตั้งแต่ 0 ถึง 999,999,999.99 ไม่เกิน 2 ตำแหน่งทศนิยม');
+    if(!e.reportValidity()) return false;
+  }
+  if(totalCents()>MAX_CENTS){alert('ยอดรวมต้องไม่เกิน 999,999,999.99 บาท');return false;}
+  if(cents(val('repaid'))>totalCents()){alert('ยอดคืนเงินต้องไม่เกินยอดรวม');return false;}
+  return true;
+}
+function saveState(){
+  if(loading) return;
+  try {
+    const state={version:2};
+    if($('remember').checked) state.reusable=Object.fromEntries(REUSABLE.map(id=>[id,val(id)]));
+    if($('saveDraft').checked) state.draft={fields:Object.fromEntries(FIELDS.map(id=>[id,$(id).value])),rows:rows().map(r=>({desc:r.querySelector('.desc').value,amount:r.querySelector('.amt').value}))};
+    if(state.reusable||state.draft) localStorage.setItem(KEY,JSON.stringify(state));
+    else localStorage.removeItem(KEY);
+    $('storageMessage').textContent=state.draft?'บันทึกร่างในเบราว์เซอร์นี้แล้ว':state.reusable?'จำเฉพาะข้อมูลใช้ซ้ำแล้ว':'ไม่ได้บันทึกข้อมูลฟอร์ม';
+  } catch { $('storageMessage').textContent='บันทึกในเบราว์เซอร์ไม่ได้ โปรดพิมพ์หรือเก็บ PDF ก่อนปิด'; }
+}
+function blankDocument(reusable={}) {
+  FIELDS.forEach(id=>$(id).value='');
+  for(const id of REUSABLE) $(id).value=typeof reusable[id]==='string'?reusable[id]:'';
+  $('docDate').value=localToday();$('status').value='รอคืนเงิน';$('repaid').value='0';
+  $('itemRows').replaceChildren();$('paper').replaceChildren();addRow();
+}
+function newDocument(){
+  if(!confirm('เริ่มเอกสารใหม่? รายการและรายละเอียดปัจจุบันจะถูกล้าง แต่คงบริษัท ผู้สำรองจ่าย ตำแหน่ง และผู้รับเงินคืน')) return;
+  const keep=Object.fromEntries(REUSABLE.map(id=>[id,$(id).value]));
+  loading=true;blankDocument(keep);loading=false;saveState();
+}
+function clearLocalData(){
+  if(!confirm('ล้างข้อมูลทั้งหมดของแอปนี้ในเบราว์เซอร์ รวมร่าง ข้อมูลใช้ซ้ำ และฟอร์มปัจจุบัน? PDF ที่เคยบันทึกจะไม่ถูกลบ')) return;
+  loading=true;$('remember').checked=false;$('saveDraft').checked=false;blankDocument();loading=false;
+  saveState();
+}
+function restoreState(){
+  loading=true;blankDocument();
+  try {
+    const state=JSON.parse(localStorage.getItem(KEY)||'null');
+    if(state?.version===2){
+      if(state.reusable && typeof state.reusable==='object') {
+        $('remember').checked=true;
+        for(const id of REUSABLE) if(typeof state.reusable[id]==='string') $(id).value=state.reusable[id];
+      }
+      if(state.draft && typeof state.draft.fields==='object' && Array.isArray(state.draft.rows)){
+        $('saveDraft').checked=true;
+        for(const id of FIELDS) if(typeof state.draft.fields[id]==='string') $(id).value=state.draft.fields[id];
+        $('itemRows').replaceChildren();
+        state.draft.rows.forEach(r=>{if(r && typeof r.desc==='string' && typeof r.amount==='string') addRow(r.desc,r.amount);});
+      }
+    }
+  } catch { $('storageMessage').textContent='อ่านข้อมูลเดิมไม่ได้ เริ่มฟอร์มว่างโดยไม่ลบข้อมูลเดิม'; }
+  loading=false;updateTotal();
+}
+function printDoc(){
+  if(!validateDocument()) return;
+  const rows=[...$('itemRows').querySelectorAll('tr')];
+  if(!rows.length){alert('กรุณาเพิ่มรายการค่าใช้จ่ายอย่างน้อย 1 รายการ');return;}
+  const total=getTotal(), repaid=Number(val('repaid'))||0, balance=Math.max(0,total-repaid);
+  const items=rows.map((r,i)=>`<tr><td>${i+1}</td><td>${safe(r.querySelector('.desc').value||'-')}</td><td class="num">${money(r.querySelector('.amt').value)}</td></tr>`).join('');
+  $('paper').innerHTML=`
+    <div class="doc-head"><h1>ใบสำรองจ่ายแทนบริษัท</h1><div class="en">DIRECTOR / EMPLOYEE EXPENSE ADVANCE</div><div style="margin-top:10px;font-size:15px;font-weight:bold">${safe(val('company'))}</div></div>
+    <div class="doc-no"><span>เลขที่เอกสาร: <b>${safe(val('docNo')||'-')}</b></span><span>วันที่: <b>${dateTH(val('docDate'))}</b></span></div>
+    <div class="print-grid">
+      <div><div class="print-label">ผู้สำรองจ่าย</div><div class="print-value">${safe(val('payer')||'-')}</div></div>
+      <div><div class="print-label">ตำแหน่ง</div><div class="print-value">${safe(val('position')||'-')}</div></div>
+      <div><div class="print-label">วันที่คาดว่าจะคืนเงิน</div><div class="print-value">${dateTH(val('dueDate'))}</div></div>
+      <div><div class="print-label">ประเภท</div><div class="print-value">สำรองจ่ายแทนบริษัท</div></div>
+    </div>
+    <div class="purpose"><strong>วัตถุประสงค์ / เหตุผลที่สำรองจ่าย</strong>${safe(val('purpose')||'-')}</div>
+    <table><thead><tr><th style="width:50px">ลำดับ</th><th>รายละเอียดค่าใช้จ่าย</th><th style="width:150px;text-align:right">จำนวนเงิน (บาท)</th></tr></thead><tbody>${items}<tr><td colspan="2" class="num"><b>รวมทั้งสิ้น</b></td><td class="num"><b>${money(total)}</b></td></tr></tbody></table>
+    <p>จำนวนเงินตัวอักษร: ${safe(bahtText(total))}</p>
+    <div class="sum">ยอดสำรองจ่ายคงเหลือที่บริษัทต้องคืน: ${money(balance)} บาท</div>
+    <div class="status"><b>สถานะการคืนเงิน:</b> ${safe(val('status'))}<br><b>คืนเงินแล้ว:</b> ${money(repaid)} บาท &nbsp;&nbsp; <b>คงเหลือ:</b> ${money(balance)} บาท<br><b>หมายเหตุ:</b> ${safe(val('note')||'-')}</div>
+    <div class="signatures"><div><div class="sign-line">ผู้สำรองจ่าย</div></div><div><div class="sign-line">ผู้ตรวจสอบ / ผู้อนุมัติ</div></div><div><div class="sign-line">ผู้รับเงินคืน<br>${safe(val('payee')||val('payer')||'-')}</div></div><div><div class="sign-line">ผู้มีอำนาจลงนามแทนบริษัท</div></div></div>
+    <div class="foot">เอกสารนี้ใช้ประกอบการบันทึกบัญชี ควรแนบใบเสร็จรับเงินและหลักฐานการชำระเงินจริงทุกครั้ง</div>`;
+  window.print();
+}
+
+restoreState();
+document.addEventListener('input', event=>{
+  if(event.target.matches('.amt,#repaid')) event.target.setCustomValidity('');
+  updateTotal();saveState();
+});
+document.addEventListener('change',()=>{updateTotal();saveState();});
+if('serviceWorker' in navigator && location.protocol.startsWith('http')) {
+  window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js',{scope:'./'}).catch(()=>{
+    $('storageMessage').textContent='เปิดใช้งานออฟไลน์ไม่ได้ แต่กรอกและพิมพ์ได้';
+  }));
+}
+
+</script>
+</body>
+</html>
