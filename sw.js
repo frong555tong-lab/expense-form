@@ -1,7 +1,7 @@
 'use strict';
 // Scope-specific, versioned static assets only. No form data enters this worker.
 const PREFIX = 'expense-static:' + self.registration.scope + ':';
-const CACHE = PREFIX + 'v2.0.0';
+const CACHE = PREFIX + 'v3.0.0';
 const CORE = ['./','./index.html','./manifest.webmanifest','./icons/icon-192.png','./icons/icon-512.png'].map(p=>new URL(p,self.registration.scope).href);
 self.addEventListener('install',event=>{
   event.waitUntil(caches.open(CACHE).then(cache=>cache.addAll(CORE)));

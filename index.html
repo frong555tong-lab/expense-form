@@ -8,42 +8,34 @@
 <link rel="apple-touch-icon" href="./icons/icon-192.png">
 <title>ใบสำรองจ่ายแทนบริษัท</title>
 <style>
-  :root{--ink:#20252b;--muted:#667085;--line:#d9dee5;--accent:#e87524;--bg:#f4f6f8}
+  :root{--ink:#20252b;--muted:#596577;--line:#d9dee5;--accent:#b94c0b;--bg:#f4f6f8}
   *{box-sizing:border-box}
-  body{margin:0;background:var(--bg);color:var(--ink);font-family:Tahoma,"Noto Sans Thai",sans-serif}
-  .wrap{max-width:1050px;margin:28px auto;padding:0 16px}
-  header{display:flex;justify-content:space-between;align-items:center;gap:16px;margin-bottom:18px}
-  h1{font-size:24px;margin:0 0 5px} .sub{color:var(--muted);font-size:13px}
-  .panel{background:white;border:1px solid var(--line);border-radius:14px;padding:20px;margin-bottom:16px}
-  h2{font-size:16px;margin:0 0 14px}
-  .grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
-  label{display:block;font-size:13px;font-weight:600;margin-bottom:6px}
-  input,textarea,select{width:100%;border:1px solid #cbd2da;border-radius:8px;padding:10px 11px;font:inherit;font-size:14px;background:#fff;color:var(--ink)}
-  textarea{min-height:70px;resize:vertical}
-  .full{grid-column:1/-1}
-  .items{width:100%;border-collapse:collapse;margin-top:8px}
-  .items th,.items td{border-bottom:1px solid var(--line);padding:8px 5px;text-align:left;font-size:13px}
-  .items th{color:var(--muted);font-weight:600}
-  .items input{min-width:0}
-  .amount{width:130px}
-  .remove{border:0;background:#fff0e8;color:#a7430b;border-radius:7px;padding:8px;cursor:pointer}
-  .actions{display:flex;gap:10px;flex-wrap:wrap}
-  button{border:0;border-radius:9px;padding:11px 16px;font:inherit;font-weight:700;cursor:pointer}
-  .primary{background:var(--accent);color:white}.secondary{background:#eef1f4;color:#26313d}
-  .total{text-align:right;font-size:18px;font-weight:700;margin-top:14px}
-  .hint{font-size:12px;color:var(--muted);line-height:1.5}
-  #printArea{display:none}
-  .choice{display:flex;gap:9px;align-items:flex-start;font-weight:400;line-height:1.6}
-  .choice input{width:auto;min-width:20px;height:20px}
-  input:invalid{border-color:#b42318}
-  button,input,select{min-height:44px}
-  .paper td,.print-value,.purpose,.status{overflow-wrap:anywhere;white-space:normal}
-  @media(max-width:480px){.wrap{padding:0 8px;margin:14px auto}.panel{padding:12px}.items thead{display:none}.items tr{display:grid;grid-template-columns:1fr 70px;border-bottom:1px solid var(--line);padding:8px 0}.items td{border:0;padding:4px}.items td:nth-child(2){grid-column:1/-1;grid-row:2}.items td:nth-child(3){grid-column:1;grid-row:3}.items td:nth-child(4){grid-column:2;grid-row:3}.items .amount{width:100%}}
-  @media(max-width:650px){.grid{grid-template-columns:1fr}.full{grid-column:auto}header{align-items:flex-start;flex-direction:column}.amount{width:100px}}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:Tahoma,sans-serif;line-height:1.6}
+  .wrap{max-width:960px;margin:28px auto;padding:0 20px 32px}
+  header{margin-bottom:24px}h1{font-size:26px;line-height:1.4;margin:0 0 8px}h2{font-size:19px;line-height:1.5;margin:0 0 20px;display:flex;gap:10px;align-items:center}
+  .sub{color:var(--muted);margin:0;font-size:15px}.hint{color:var(--muted);font-size:13px;line-height:1.7;margin:10px 0}
+  .panel{background:white;border:1px solid var(--line);border-radius:14px;padding:24px;margin-bottom:20px}
+  .step{display:inline-grid;place-items:center;flex-shrink:0;border-radius:50%;width:30px;height:30px;background:#fff0e8;color:#9c3d07;font-size:16px}
+  .grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px}.full{grid-column:1/-1}
+  label{display:block;font-size:14px;font-weight:700;margin-bottom:7px}.optional{font-weight:400;color:var(--muted);font-size:13px}
+  input,textarea,select{width:100%;min-width:0;min-height:48px;border:1px solid #aab4c1;border-radius:8px;padding:11px 12px;font:inherit;font-size:16px;background:#fff;color:var(--ink)}
+  input[readonly]{background:#f4f6f8;border-color:var(--line)}textarea{min-height:96px;resize:vertical}.field-hint{margin:5px 0 0}
+  :focus-visible{outline:3px solid #1967b2;outline-offset:3px}input[aria-invalid="true"]{border-color:#b42318;background:#fff8f6}
+  button,summary{min-height:48px}button{border:1px solid transparent;border-radius:9px;padding:12px 18px;font:inherit;font-size:15px;font-weight:700;cursor:pointer}
+  button:disabled{opacity:.55;cursor:not-allowed}.primary{background:var(--accent);color:white}.secondary{background:#eef1f4;color:#26313d;border-color:#d9dee5}.complete{width:100%;font-size:18px;min-height:56px;margin-top:4px}
+  .items{width:100%;border-collapse:collapse;margin-top:10px}.items th,.items td{border-bottom:1px solid var(--line);padding:10px 6px;text-align:left;font-size:14px}.items th{color:var(--muted);font-weight:600}.items td:first-child{vertical-align:middle}.amount{width:160px}.items .amt{width:100%}
+  .remove{background:#fff;color:#9c3d07;border:1px solid #e6c8b6;padding:10px;min-width:48px}.mobile-label{display:none}.row-actions{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-top:16px}.item-total{text-align:right;border-top:1px solid var(--line);padding-top:14px;margin-bottom:0}.item-total strong{margin-left:12px}
+  .summary-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:0 0 18px}.summary-grid>div{background:#f4f6f8;padding:14px;border-radius:10px}.summary-grid dt{font-size:13px;color:var(--muted)}.summary-grid dd{margin:6px 0 0;font-size:22px;font-weight:700;overflow-wrap:anywhere}.summary-grid small{font-size:13px;font-weight:400}.summary-grid .balance{background:#fff0e8}.balance dd{color:#9c3d07}
+  .feedback{color:#a11910;font-size:14px;margin:10px 0}.feedback:empty{display:none}
+  details{border:1px solid var(--line);border-radius:9px;background:white}summary{cursor:pointer;padding:12px 14px;font-size:14px;font-weight:600}.details-body{padding:0 16px 16px}.choice{display:flex;gap:10px;align-items:flex-start;font-weight:400;min-height:44px;padding:8px 0;margin:0}.choice input{width:22px;height:22px;min-height:22px;flex-shrink:0;margin:3px 0}
+  .share-options{margin-top:20px}.share-options button{margin-top:8px}.next-document{margin-top:28px;padding-top:18px;border-top:1px solid var(--line)}.data-settings{margin-top:24px}.quiet-danger{background:white;border:1px solid #d6b5af;color:#8d3026;font-size:14px}
+  .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+  .paper td,.print-value,.purpose,.status{overflow-wrap:anywhere;white-space:normal}#printArea{display:none}
+  @media(max-width:680px){.wrap{padding:0 12px 24px;margin:18px auto}.panel{padding:18px 14px;margin-bottom:16px}h1{font-size:23px}h2{font-size:18px}.grid{grid-template-columns:1fr;gap:18px}.full{grid-column:auto}.summary-grid{grid-template-columns:1fr}.summary-grid>div{display:flex;justify-content:space-between;align-items:center;gap:12px}.summary-grid dd{margin:0;font-size:21px}.next-document button{width:100%}.row-actions button{width:100%}.items thead{display:none}.items tr{display:grid;grid-template-columns:minmax(0,1fr) 64px;border-bottom:1px solid var(--line);padding:12px 0}.items td{border:0;padding:5px 0}.items td:first-child{grid-column:1/-1;color:var(--muted)}.items td:nth-child(2){grid-column:1/-1;grid-row:2}.items td:nth-child(3){grid-column:1;grid-row:3;padding-right:12px}.items td:nth-child(4){grid-column:2;grid-row:3;align-self:end;padding-bottom:5px}.mobile-label{display:block;font-size:13px;font-weight:600;margin-bottom:5px}.items .amount{width:100%}.share-options button{width:100%}.item-total{font-size:14px}}
   @media print{
     @page{size:A4;margin:15mm}
     body{background:#fff}
-    .wrap,header,.panel{display:none!important}
+    .wrap,header,.panel,button,input[type="file"],details{display:none!important}
     #printArea{display:block!important;color:#111;font-family:Tahoma,"Noto Sans Thai",sans-serif}
     .paper{width:100%}
     .doc-head{text-align:center;margin-bottom:22px}
@@ -72,53 +64,87 @@
 <body>
 <div class="wrap">
   <header>
-    <div><h1>ใบสำรองจ่ายแทนบริษัท</h1><div class="sub">กรอกข้อมูล แล้วกด “พิมพ์เอกสาร” เพื่อบันทึกเป็น PDF หรือสั่งพิมพ์</div></div>
-    <div class="actions"><button class="secondary" type="button" onclick="newDocument()">เอกสารใหม่ (คงข้อมูลใช้ซ้ำ)</button><button class="primary" type="button" onclick="printDoc()">พิมพ์เอกสาร</button></div>
+    <h1>ใบสำรองจ่ายแทนบริษัท</h1>
+    <p class="sub">กรอกจากบนลงล่าง ตรวจยอด แล้วกด “พิมพ์ / บันทึก PDF” ที่ท้ายเอกสาร</p>
+    <p class="hint">ข้อมูลฟอร์มอยู่ในเบราว์เซอร์นี้ ไม่ส่งขึ้นเซิร์ฟเวอร์และไม่ซิงก์ข้ามเครื่อง • ช่องที่ระบุว่าไม่บังคับเว้นว่างได้</p>
   </header>
-
-  <section class="panel">
-    <p class="hint">ข้อมูลที่กรอกประมวลผลในเบราว์เซอร์เท่านั้น ไม่ส่งขึ้นเซิร์ฟเวอร์ ไม่ซิงก์ข้ามเครื่อง การเปิดเว็บยังส่งคำขอไฟล์ให้ผู้ให้บริการโฮสต์ตามปกติ</p>
-    <label class="choice"><input autocomplete="off" id="remember" type="checkbox"> จำเฉพาะบริษัท ผู้สำรองจ่าย ตำแหน่ง และผู้รับเงินคืนในเบราว์เซอร์นี้</label>
-    <label class="choice"><input autocomplete="off" id="saveDraft" type="checkbox"> บันทึกเอกสารร่างนี้ในเบราว์เซอร์ (รวมรายละเอียดทั้งหมดที่กรอก)</label>
-    <p class="hint">ไม่ควรเลือกบนเครื่องใช้ร่วมกัน ไม่มีการบันทึกหากไม่เลือก • PDF ที่บันทึกมีข้อมูลที่กรอก โปรดเก็บอย่างปลอดภัย</p>
-    <div class="actions"><button type="button" class="secondary" onclick="clearLocalData()">ล้างข้อมูลทั้งหมดของแอปนี้ในเบราว์เซอร์</button></div>
-    <p id="storageMessage" role="status" class="hint"></p>
-  </section>
-  <section class="panel">
-    <h2>ข้อมูลเอกสาร</h2>
-    <div class="grid">
-      <div><label for="company">ชื่อบริษัท</label><input autocomplete="off" id="company"></div>
-      <div><label for="docNo">เลขที่เอกสาร</label><input autocomplete="off" id="docNo"></div>
-      <div><label for="docDate">วันที่สำรองจ่าย</label><input autocomplete="off" id="docDate" type="date"></div>
-      <div><label for="payer">ผู้สำรองจ่าย</label><input autocomplete="off" id="payer" placeholder="ชื่อ-นามสกุล"></div>
-      <div><label for="payee">ผู้รับเงินคืน (ถ้าต่างจากผู้สำรองจ่าย)</label><input autocomplete="off" id="payee" autocomplete="off"></div>
-      <div><label for="position">ตำแหน่ง</label><input autocomplete="off" id="position"></div>
-      <div><label for="dueDate">วันที่คาดว่าจะคืนเงิน</label><input autocomplete="off" id="dueDate" type="date"></div>
+  <main>
+    <section class="panel" aria-labelledby="basicHeading">
+      <h2 id="basicHeading"><span class="step">1</span> ข้อมูลเอกสาร</h2>
+      <div class="grid">
+        <div class="full"><label for="company">ชื่อบริษัท <span class="optional">(ไม่บังคับ)</span></label><input autocomplete="off" id="company" placeholder="ชื่อบริษัทที่ต้องการแสดงในเอกสาร"></div>
+        <div><label for="docNo">เลขที่เอกสาร <span class="optional">(ไม่บังคับ)</span></label><input autocomplete="off" id="docNo" placeholder="กรอกตามระบบเลขเอกสารของคุณ"></div>
+        <div><label for="docDate">วันที่สำรองจ่าย</label><input autocomplete="off" id="docDate" type="date" required></div>
+        <div><label for="payer">ผู้สำรองจ่าย <span class="optional">(ไม่บังคับ)</span></label><input autocomplete="off" id="payer" placeholder="ชื่อ–นามสกุล"></div>
+        <div><label for="position">ตำแหน่ง <span class="optional">(ไม่บังคับ)</span></label><input autocomplete="off" id="position"></div>
+        <div><label for="payee">ผู้รับเงินคืน <span class="optional">(ไม่บังคับ)</span></label><input autocomplete="off" id="payee" aria-describedby="payeeHint"><p class="hint field-hint" id="payeeHint">เว้นว่างเพื่อใช้ชื่อผู้สำรองจ่ายในช่องลงนาม</p></div>
+        <div><label for="dueDate">วันที่คาดว่าจะคืนเงิน <span class="optional">(ไม่บังคับ)</span></label><input autocomplete="off" id="dueDate" type="date"></div>
+      </div>
+    </section>
+    <section class="panel" aria-labelledby="itemsHeading">
+      <h2 id="itemsHeading"><span class="step">2</span> รายการค่าใช้จ่าย</h2>
+      <p class="hint" id="amountHint">กรอกจำนวนเงินเป็นบาท ตั้งแต่ 0 ขึ้นไป ทศนิยมไม่เกิน 2 ตำแหน่ง • ยอดรวมไม่เกิน 999,999,999.99 บาท</p>
+      <table class="items" aria-describedby="amountHint">
+        <caption class="sr-only">รายการค่าใช้จ่าย แต่ละรายการมีรายละเอียด จำนวนเงิน และปุ่มลบ</caption>
+        <thead><tr><th scope="col" style="width:48px">ลำดับ</th><th scope="col">รายละเอียด</th><th scope="col" class="amount">จำนวนเงิน (บาท)</th><th scope="col" style="width:64px"><span class="sr-only">จัดการรายการ</span></th></tr></thead>
+        <tbody id="itemRows"></tbody>
+      </table>
+      <div class="row-actions"><button id="addItem" class="secondary" type="button" onclick="addRow('', '', true)">+ เพิ่มรายการค่าใช้จ่าย</button><span class="hint">ลบรายการที่ไม่ใช้ได้ ยอดจะคำนวณใหม่ทันที</span></div>
+      <p class="item-total">รวมค่าใช้จ่าย <strong><span id="totalText">0.00</span> บาท</strong></p>
+    </section>
+    <section class="panel" aria-labelledby="detailHeading">
+      <h2 id="detailHeading"><span class="step">3</span> รายละเอียดและการคืนเงิน</h2>
+      <div class="grid">
+        <div class="full"><label for="purpose">วัตถุประสงค์ / เหตุผลที่สำรองจ่าย <span class="optional">(ไม่บังคับ)</span></label><textarea autocomplete="off" id="purpose" placeholder="กรอกรายละเอียดที่จำเป็นต่อเอกสาร"></textarea></div>
+        <div><label for="repaid">จำนวนเงินที่คืนแล้ว (บาท)</label><input autocomplete="off" id="repaid" type="number" inputmode="decimal" min="0" max="999999999.99" step="0.01" aria-describedby="repaidHint"><p id="repaidHint" class="hint field-hint">ยังไม่ได้รับคืนให้ใส่ 0 • ต้องไม่เกินยอดรวมค่าใช้จ่าย</p></div>
+        <div><label for="status">สถานะการคืนเงิน <span class="optional">(คำนวณอัตโนมัติ)</span></label><input id="status" readonly tabindex="-1" aria-describedby="statusHint"><p id="statusHint" class="hint field-hint">อ้างอิงจากยอดรวมและจำนวนเงินที่คืนแล้ว ไม่ต้องเลือกสถานะเอง</p></div>
+        <div class="full"><label for="note">หมายเหตุ <span class="optional">(ไม่บังคับ)</span></label><textarea autocomplete="off" id="note" placeholder="กรอกเฉพาะข้อมูลที่ต้องการแสดงในเอกสาร"></textarea></div>
+      </div>
+      <p class="hint">ควรแนบใบเสร็จและหลักฐานการชำระเงินจริงกับเอกสาร ไม่จำเป็นต้องใส่เลขบัญชี เลขภาษี หรือข้อมูลติดต่อในหมายเหตุ</p>
+    </section>
+    <section class="panel finish" aria-labelledby="finishHeading">
+      <h2 id="finishHeading"><span class="step">4</span> ตรวจยอดและออกเอกสาร</h2>
+      <dl class="summary-grid" aria-label="สรุปยอดเงิน">
+        <div><dt>ยอดรวมค่าใช้จ่าย</dt><dd><span id="summaryTotal">0.00</span> <small>บาท</small></dd></div>
+        <div><dt>คืนเงินแล้ว</dt><dd><span id="summaryRepaid">0.00</span> <small>บาท</small></dd></div>
+        <div class="balance"><dt>คงเหลือที่บริษัทต้องคืน</dt><dd><span id="summaryBalance">0.00</span> <small>บาท</small></dd></div>
+      </dl>
+      <p id="validationMessage" tabindex="-1" class="feedback" role="status" aria-live="polite"></p>
+      <details class="save-options">
+        <summary>ตัวเลือกจำข้อมูล / บันทึกร่างในเบราว์เซอร์นี้</summary>
+        <div class="details-body">
+          <label class="choice"><input autocomplete="off" id="remember" type="checkbox"> จำเฉพาะบริษัท ผู้สำรองจ่าย ตำแหน่ง และผู้รับเงินคืน เพื่อกรอกครั้งต่อไป</label>
+          <label class="choice"><input autocomplete="off" id="saveDraft" type="checkbox"> บันทึกเอกสารร่างนี้ (รวมรายละเอียดทั้งหมดที่กรอก)</label>
+          <p class="hint">ไม่เลือก = ไม่บันทึก • ไม่ควรเลือกบนเครื่องใช้ร่วมกัน ข้อมูลไม่เข้ารหัสและไม่ซิงก์ข้ามเครื่อง</p>
+        </div>
+      </details>
+      <p id="storageMessage" role="status" class="hint">ไม่ได้บันทึกข้อมูลฟอร์ม</p>
+      <p class="hint">ตรวจชื่อ วันที่ และยอดเงินก่อนพิมพ์ เลือก “บันทึกเป็น PDF” ในหน้าพิมพ์ของอุปกรณ์ แล้วเก็บไฟล์และหลักฐานให้ปลอดภัย</p>
+      <button id="printButton" class="primary complete" type="button" onclick="printDoc()">พิมพ์ / บันทึก PDF</button>
+      <details class="share-options">
+        <summary>แชร์ PDF ที่บันทึกแล้ว เช่น ส่งผ่าน LINE</summary>
+        <div class="details-body">
+          <p class="hint">ต้องบันทึก PDF จากปุ่มด้านบนก่อน เว็บไม่สามารถดึงไฟล์จากหน้าพิมพ์ได้อัตโนมัติ เลือกไฟล์ของเอกสารปัจจุบัน แล้วเปิดเมนูแชร์ของอุปกรณ์ เลือก LINE และผู้รับ จากนั้นกดส่งด้วยตัวเอง</p>
+          <label for="pdfFile">เลือก PDF ที่บันทึกแล้ว</label>
+          <input id="pdfFile" type="file" accept="application/pdf,.pdf" aria-describedby="shareMessage" onchange="selectPdf()">
+          <p id="shareMessage" class="hint" role="status">ยังไม่ได้เลือกไฟล์ • ไม่มีการอัปโหลดไฟล์ขึ้นเว็บ</p>
+          <button id="shareButton" class="secondary" type="button" disabled onclick="sharePdf()">เปิดเมนูแชร์ไฟล์ PDF</button>
+          <p class="hint">หากอุปกรณ์ไม่รองรับการแชร์ไฟล์จากเว็บ ให้เปิด LINE แล้วแนบ PDF ที่บันทึกไว้โดยตรง</p>
+        </div>
+      </details>
+      <div class="next-document"><p class="hint">ออกเอกสารเสร็จแล้วและต้องการทำฉบับถัดไป?</p><button id="newButton" class="secondary" type="button" onclick="newDocument()">เริ่มเอกสารใหม่ (คงข้อมูลใช้ซ้ำ)</button></div>
+    </section>
+  </main>
+  <details class="data-settings">
+    <summary>การจัดการข้อมูลในเบราว์เซอร์</summary>
+    <div class="details-body">
+      <p class="hint">ล้างเฉพาะฟอร์ม ร่าง และข้อมูลใช้ซ้ำของแอปนี้ ไม่ลบข้อมูลแอปอื่นหรือ PDF ที่เคยบันทึก หากล้างข้อมูลเว็บไซต์ ข้อมูลที่จำไว้อาจหายได้</p>
+      <button id="clearButton" type="button" class="quiet-danger" onclick="clearLocalData()">ล้างข้อมูลทั้งหมดของแอปนี้</button>
+      <p class="hint">หากเว็บมีเวอร์ชันใหม่ ให้เก็บ PDF หรือบันทึกร่างก่อน ปิดแท็บ / หน้าต่างแอปนี้ทุกหน้าต่าง แล้วเปิดใหม่ ระบบไม่บังคับรีโหลดระหว่างกรอก</p>
+      <p class="hint">ผู้ให้บริการโฮสต์ยังได้รับคำขอเปิดไฟล์เว็บ / IP ตามปกติ แต่ข้อมูลฟอร์มไม่ถูกส่งไปด้วย</p>
     </div>
-  </section>
-
-  <section class="panel">
-    <h2>รายการค่าใช้จ่าย</h2>
-    <table class="items">
-      <thead><tr><th style="width:48px">ลำดับ</th><th>รายละเอียด</th><th class="amount">จำนวนเงิน (บาท)</th><th style="width:54px"></th></tr></thead>
-      <tbody id="itemRows"></tbody>
-    </table>
-    <div class="actions" style="margin-top:12px"><button class="secondary" type="button" onclick="addRow()">+ เพิ่มรายการ</button></div>
-    <div class="total">รวมทั้งสิ้น <span id="totalText">0.00</span> บาท</div>
-  </section>
-
-  <section class="panel">
-    <h2>รายละเอียดเพิ่มเติม</h2>
-    <div class="grid">
-      <div class="full"><label for="purpose">วัตถุประสงค์ / เหตุผลที่สำรองจ่าย</label><textarea id="purpose" placeholder="กรอกรายละเอียด (ถ้ามี)"></textarea></div>
-      <div><label for="status">สถานะการคืนเงิน</label><select id="status"><option>รอคืนเงิน</option><option>คืนเงินแล้วบางส่วน</option><option>คืนเงินครบแล้ว</option></select></div>
-      <div><label for="repaid">จำนวนเงินที่คืนแล้ว (บาท)</label><input autocomplete="off" id="repaid" type="number" inputmode="decimal" min="0" max="999999999.99" step="0.01"></div>
-      <div class="full"><label for="note">หมายเหตุ</label><textarea id="note" placeholder="กรอกรายละเอียด (ถ้ามี)"></textarea></div>
-    </div>
-    <p class="hint">แนบใบเสร็จหรือหลักฐานการจ่ายเงินจริงไว้กับเอกสารนี้ และควรขอเอกสารค่าใช้จ่ายในนามบริษัทเมื่อทำได้</p>
-  </section>
+  </details>
 </div>
-
 <div id="printArea"><div class="paper" id="paper"></div></div>
 
 <script>
@@ -130,7 +156,7 @@ const REUSABLE = ['company','payer','payee','position'];
 const BASE = new URL('./', location.href).pathname;
 const KEY = 'expense-local-v2:' + BASE;
 const MAX_CENTS = 99999999999;
-let loading = false;
+let loading = false, nextRowId = 0;
 const money = n => (Number(n)||0).toLocaleString('th-TH',{minimumFractionDigits:2,maximumFractionDigits:2});
 const localToday = (d = new Date()) => `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
 const dateTH = v => { if(!/^\d{4}-\d{2}-\d{2}$/.test(v)) return '-'; const d = new Date(v+'T00:00:00'); return Number.isNaN(d.getTime()) ? '-' : d.toLocaleDateString('th-TH',{day:'numeric',month:'long',year:'numeric'}); };
@@ -162,28 +188,71 @@ function bahtText(value) {
 function safe(s){return String(s??'').replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;').replaceAll('"','&quot;').replaceAll("'",'&#39;').replaceAll('\n','<br>');}
 function val(id){return $(id).value.trim();}
 function rows(){return [...$('itemRows').querySelectorAll('tr')];}
-function addRow(desc='',amount='') {
-  const tr=document.createElement('tr');
-  // Only constant markup is inserted. Saved/user data is assigned through value.
-  tr.innerHTML='<td class="seq"></td><td><input class="desc" autocomplete="off" aria-label="รายละเอียดค่าใช้จ่าย" placeholder="รายละเอียดค่าใช้จ่าย"></td><td><input class="amount amt" type="number" inputmode="decimal" min="0" max="999999999.99" step="0.01" aria-label="จำนวนเงิน (บาท)" placeholder="0.00"></td><td><button class="remove" type="button" aria-label="ลบรายการ">ลบ</button></td>';
+function addRow(desc='',amount='',focus=false) {
+  const tr=document.createElement('tr'), uid=++nextRowId;
+  // Only constant/numeric markup is inserted; user/saved data uses .value.
+  tr.innerHTML=`<td class="seq"></td><td><label class="mobile-label" for="desc-${uid}">รายละเอียด (ไม่บังคับ)</label><input id="desc-${uid}" class="desc" autocomplete="off" placeholder="รายละเอียดค่าใช้จ่าย"></td><td><label class="mobile-label" for="amt-${uid}">จำนวนเงิน (บาท)</label><input id="amt-${uid}" class="amount amt" type="number" inputmode="decimal" min="0" max="999999999.99" step="0.01" required placeholder="0.00"></td><td><button class="remove" type="button">ลบ</button></td>`;
   tr.querySelector('.desc').value=String(desc);
   tr.querySelector('.amt').value=String(amount);
-  tr.querySelector('.remove').addEventListener('click',()=>{tr.remove();renumber();updateTotal();saveState();});
+  tr.querySelector('.remove').addEventListener('click',()=>{
+    const index=rows().indexOf(tr);
+    tr.remove();renumber();updateTotal();saveState();
+    const next=rows()[Math.min(index,rows().length-1)];
+    (next?next.querySelector('.desc'):$('addItem')).focus();
+  });
   $('itemRows').appendChild(tr);renumber();updateTotal();saveState();
+  if(focus) tr.querySelector('.desc').focus();
 }
-function renumber(){rows().forEach((r,i)=>r.querySelector('.seq').textContent=i+1);}
+function renumber(){rows().forEach((r,i)=>{
+  r.querySelector('.seq').textContent='รายการ '+(i+1);
+  r.querySelector('.desc').setAttribute('aria-label','รายละเอียดรายการ '+(i+1)+' (ไม่บังคับ)');
+  r.querySelector('.amt').setAttribute('aria-label','จำนวนเงินรายการ '+(i+1)+' (บาท)');
+  r.querySelector('.remove').setAttribute('aria-label','ลบรายการ '+(i+1));
+});}
 function totalCents(){return rows().reduce((s,r)=>s+(cents(r.querySelector('.amt').value)??0),0);}
 function getTotal(){return totalCents()/100;}
-function updateTotal(){$('totalText').textContent=money(getTotal());}
+function setText(id,text){if($(id).textContent!==text) $(id).textContent=text;}
+function repaymentStatus(total,repaid){
+  if(total===0) return 'ยังไม่มียอดค่าใช้จ่าย';
+  return repaid===0?'รอคืนเงิน':repaid===total?'คืนเงินครบแล้ว':'คืนเงินแล้วบางส่วน';
+}
+function updateTotal(){
+  const amounts=rows().map(r=>r.querySelector('.amt'));
+  const total=totalCents(), repaid=cents(val('repaid'));
+  const validItems=amounts.every(e=>cents(e.value)!==null&&!e.validity.badInput) && total<=MAX_CENTS;
+  const validRepaid=repaid!==null&&!$('repaid').validity.badInput;
+  const validBalance=validItems&&validRepaid&&repaid<=total;
+  setText('totalText',validItems?money(total/100):'—');
+  setText('summaryTotal',validItems?money(total/100):'—');
+  setText('summaryRepaid',validRepaid?money(repaid/100):'—');
+  setText('summaryBalance',validBalance?money((total-repaid)/100):'—');
+  $('status').value=validBalance?repaymentStatus(total,repaid):'โปรดตรวจสอบจำนวนเงิน';
+  const error=!validItems?'ตรวจสอบจำนวนเงินแต่ละรายการ: ต้องไม่ติดลบ มีทศนิยมไม่เกิน 2 ตำแหน่ง และยอดรวมไม่เกิน 999,999,999.99 บาท':!validRepaid?'ตรวจสอบจำนวนเงินที่คืนแล้ว: ต้องไม่ติดลบและมีทศนิยมไม่เกิน 2 ตำแหน่ง':!validBalance?'จำนวนเงินที่คืนแล้วต้องไม่เกินยอดรวมค่าใช้จ่าย':'';
+  setText('validationMessage',error);
+  $('repaid').setAttribute('aria-invalid',String(!validRepaid || (validItems&&validRepaid&&repaid>total)));
+  amounts.forEach(e=>e.setAttribute('aria-invalid',String(cents(e.value)===null||e.validity.badInput)));
+}
+function validationError(message,field){
+  setText('validationMessage',message);
+  if(field){field.setAttribute('aria-invalid','true');field.focus();}
+  else $('validationMessage').focus();
+  return false;
+}
 function validateDocument(){
-  if(!rows().length){alert('กรุณาเพิ่มรายการค่าใช้จ่ายอย่างน้อย 1 รายการ');return false;}
+  updateTotal();
+  if(!rows().length) return validationError('กรุณาเพิ่มรายการค่าใช้จ่ายอย่างน้อย 1 รายการ',$('addItem'));
   for(const e of [...document.querySelectorAll('.amt'),$('repaid')]) {
-    const valid=cents(e.value)!==null && !e.validity.badInput;
-    e.setCustomValidity(valid?'':'กรอกจำนวนเงินตั้งแต่ 0 ถึง 999,999,999.99 ไม่เกิน 2 ตำแหน่งทศนิยม');
-    if(!e.reportValidity()) return false;
+    const missing=e!==$('repaid')&&e.value.trim()==='';
+    const valid=!missing&&cents(e.value)!==null&&!e.validity.badInput;
+    const message=missing?'กรุณากรอกจำนวนเงินของรายการนี้':'กรอกจำนวนเงินตั้งแต่ 0 ถึง 999,999,999.99 ไม่เกิน 2 ตำแหน่งทศนิยม';
+    e.setCustomValidity(valid?'':message);
+    if(!e.reportValidity()) return validationError(message,e);
   }
-  if(totalCents()>MAX_CENTS){alert('ยอดรวมต้องไม่เกิน 999,999,999.99 บาท');return false;}
-  if(cents(val('repaid'))>totalCents()){alert('ยอดคืนเงินต้องไม่เกินยอดรวม');return false;}
+  if(totalCents()>MAX_CENTS) return validationError('ยอดรวมต้องไม่เกิน 999,999,999.99 บาท',rows()[0].querySelector('.amt'));
+  if(cents(val('repaid'))>totalCents()) return validationError('ยอดคืนเงินต้องไม่เกินยอดรวม',$('repaid'));
+  for(const e of [$('docDate'),$('dueDate')]){
+    if(!e.reportValidity()) return validationError('กรุณาตรวจสอบวันที่',e);
+  }
   return true;
 }
 function saveState(){
@@ -194,24 +263,24 @@ function saveState(){
     if($('saveDraft').checked) state.draft={fields:Object.fromEntries(FIELDS.map(id=>[id,$(id).value])),rows:rows().map(r=>({desc:r.querySelector('.desc').value,amount:r.querySelector('.amt').value}))};
     if(state.reusable||state.draft) localStorage.setItem(KEY,JSON.stringify(state));
     else localStorage.removeItem(KEY);
-    $('storageMessage').textContent=state.draft?'บันทึกร่างในเบราว์เซอร์นี้แล้ว':state.reusable?'จำเฉพาะข้อมูลใช้ซ้ำแล้ว':'ไม่ได้บันทึกข้อมูลฟอร์ม';
+    setText('storageMessage',state.draft?'บันทึกร่างในเบราว์เซอร์นี้แล้ว':state.reusable?'จำเฉพาะข้อมูลใช้ซ้ำแล้ว':'ไม่ได้บันทึกข้อมูลฟอร์ม');
   } catch { $('storageMessage').textContent='บันทึกในเบราว์เซอร์ไม่ได้ โปรดพิมพ์หรือเก็บ PDF ก่อนปิด'; }
 }
 function blankDocument(reusable={}) {
   FIELDS.forEach(id=>$(id).value='');
   for(const id of REUSABLE) $(id).value=typeof reusable[id]==='string'?reusable[id]:'';
   $('docDate').value=localToday();$('status').value='รอคืนเงิน';$('repaid').value='0';
-  $('itemRows').replaceChildren();$('paper').replaceChildren();addRow();
+  $('itemRows').replaceChildren();$('paper').replaceChildren();resetPdfSelection();addRow();
 }
 function newDocument(){
   if(!confirm('เริ่มเอกสารใหม่? รายการและรายละเอียดปัจจุบันจะถูกล้าง แต่คงบริษัท ผู้สำรองจ่าย ตำแหน่ง และผู้รับเงินคืน')) return;
   const keep=Object.fromEntries(REUSABLE.map(id=>[id,$(id).value]));
-  loading=true;blankDocument(keep);loading=false;saveState();
+  loading=true;blankDocument(keep);loading=false;saveState();$('company').focus();
 }
 function clearLocalData(){
   if(!confirm('ล้างข้อมูลทั้งหมดของแอปนี้ในเบราว์เซอร์ รวมร่าง ข้อมูลใช้ซ้ำ และฟอร์มปัจจุบัน? PDF ที่เคยบันทึกจะไม่ถูกลบ')) return;
   loading=true;$('remember').checked=false;$('saveDraft').checked=false;blankDocument();loading=false;
-  saveState();
+  saveState();$('company').focus();
 }
 function restoreState(){
   loading=true;blankDocument();
@@ -231,12 +300,14 @@ function restoreState(){
     }
   } catch { $('storageMessage').textContent='อ่านข้อมูลเดิมไม่ได้ เริ่มฟอร์มว่างโดยไม่ลบข้อมูลเดิม'; }
   loading=false;updateTotal();
+  if($('saveDraft').checked) setText('storageMessage','เปิดร่างที่บันทึกไว้ในเบราว์เซอร์นี้แล้ว');
+  else if($('remember').checked) setText('storageMessage','เติมข้อมูลใช้ซ้ำจากเบราว์เซอร์นี้แล้ว');
 }
 function printDoc(){
   if(!validateDocument()) return;
   const rows=[...$('itemRows').querySelectorAll('tr')];
   if(!rows.length){alert('กรุณาเพิ่มรายการค่าใช้จ่ายอย่างน้อย 1 รายการ');return;}
-  const total=getTotal(), repaid=Number(val('repaid'))||0, balance=Math.max(0,total-repaid);
+  const total=getTotal(), repaid=cents(val('repaid'))/100, balance=(totalCents()-cents(val('repaid')))/100;
   const items=rows.map((r,i)=>`<tr><td>${i+1}</td><td>${safe(r.querySelector('.desc').value||'-')}</td><td class="num">${money(r.querySelector('.amt').value)}</td></tr>`).join('');
   $('paper').innerHTML=`
     <div class="doc-head"><h1>ใบสำรองจ่ายแทนบริษัท</h1><div class="en">DIRECTOR / EMPLOYEE EXPENSE ADVANCE</div><div style="margin-top:10px;font-size:15px;font-weight:bold">${safe(val('company'))}</div></div>
@@ -257,9 +328,61 @@ function printDoc(){
   window.print();
 }
 
+let selectedPdf=null, pdfSelection=0;
+function fileSharingSupported(file) {
+  if(!window.isSecureContext || typeof navigator.share!=='function' || typeof navigator.canShare!=='function') return false;
+  try { return navigator.canShare({files:[file]}); } catch { return false; }
+}
+function resetPdfSelection(){
+  pdfSelection++;selectedPdf=null;$('pdfFile').value='';$('shareButton').disabled=true;
+  $('shareMessage').textContent='ยังไม่ได้เลือกไฟล์ • ไม่มีการอัปโหลดไฟล์ขึ้นเว็บ';
+}
+async function selectPdf(){
+  const token=++pdfSelection;
+  selectedPdf=null;$('shareButton').disabled=true;
+  const file=$('pdfFile').files?.[0];
+  if(!file){$('shareMessage').textContent='ยังไม่ได้เลือกไฟล์';return;}
+  if(!(/\.pdf$/i.test(file.name)||file.type==='application/pdf')){
+    $('shareMessage').textContent='กรุณาเลือกไฟล์ PDF ที่บันทึกจากเอกสารนี้';return;
+  }
+  try {
+    const bytes=new Uint8Array(await file.slice(0,5).arrayBuffer());
+    if(token!==pdfSelection) return;
+    if(String.fromCharCode(...bytes)!=='%PDF-'){
+      $('shareMessage').textContent='ไฟล์นี้ไม่ใช่ PDF ที่รองรับ โปรดเลือก PDF ที่บันทึกใหม่';return;
+    }
+    if(!fileSharingSupported(file)){
+      $('shareMessage').textContent='อุปกรณ์หรือเบราว์เซอร์นี้ไม่รองรับการแชร์ไฟล์จากเว็บ ให้เปิด LINE แล้วแนบ PDF ที่บันทึกไว้โดยตรง';return;
+    }
+    selectedPdf=file;$('shareButton').disabled=false;
+    $('shareMessage').textContent='เลือกไฟล์แล้ว: '+file.name+' — ตรวจว่าเป็นเอกสารปัจจุบัน แล้วกดเปิดเมนูแชร์';
+  } catch {
+    if(token===pdfSelection) $('shareMessage').textContent='อ่านไฟล์ไม่ได้ โปรดเลือก PDF อีกครั้ง หรือแนบไฟล์ใน LINE โดยตรง';
+  }
+}
+async function sharePdf(){
+  const file=selectedPdf;
+  if(!file || !fileSharingSupported(file)){
+    $('shareButton').disabled=true;$('shareMessage').textContent='ไม่สามารถเปิดเมนูแชร์ได้ ให้แนบ PDF ใน LINE โดยตรง';return;
+  }
+  $('shareButton').disabled=true;
+  try {
+    // Called directly from a separate button click to retain user activation.
+    // No URL/text substitution: share only the exact PDF chosen by the user.
+    await navigator.share({files:[file]});
+    $('shareMessage').textContent='ปิดเมนูแชร์แล้ว เว็บตรวจสอบไม่ได้ว่าส่งไฟล์ถึงผู้รับหรือไม่';
+  } catch(error) {
+    if(error?.name==='AbortError') $('shareMessage').textContent='ยกเลิกการแชร์แล้ว ไฟล์ยังอยู่ในอุปกรณ์';
+    else $('shareMessage').textContent='แชร์ไฟล์ไม่ได้ ให้เปิด LINE แล้วแนบ PDF ที่บันทึกไว้โดยตรง';
+  } finally {
+    if(selectedPdf===file) $('shareButton').disabled=false;
+  }
+}
+
 restoreState();
 document.addEventListener('input', event=>{
   if(event.target.matches('.amt,#repaid')) event.target.setCustomValidity('');
+  if(!['pdfFile','remember','saveDraft'].includes(event.target.id) && (selectedPdf || $('pdfFile').value)) resetPdfSelection();
   updateTotal();saveState();
 });
 document.addEventListener('change',()=>{updateTotal();saveState();});
